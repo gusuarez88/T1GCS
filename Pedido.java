@@ -9,7 +9,7 @@ public class Pedido {
     private Departamento departamentoSolicitante;
     private LocalDate dataPedido;
     private LocalDate dataConclusao;
-    private Status status;
+    private String status;
     private ArrayList<Item> itens;
     private double valorTotal;
 
@@ -24,15 +24,22 @@ public class Pedido {
         this.departamentoSolicitante = departamentoSolicitante;
         this.dataPedido = dataPedido;
         this.dataConclusao = null;
-        this.status = Status.ABERTO;
+
+        // O pedido sempre começa aberto
+        this.status = "ABERTO";
+
         this.itens = new ArrayList<>();
         this.valorTotal = 0;
     }
 
     public void adicionarItem(Item item) {
 
-        if (status != Status.ABERTO) {
-            System.out.println("Não é possível adicionar itens a um pedido que não está aberto.");
+        if (!status.equals("ABERTO")) {
+
+            System.out.println(
+                    "Não é possível adicionar itens a um pedido que não está aberto."
+            );
+
             return;
         }
 
@@ -53,31 +60,37 @@ public class Pedido {
 
     public void aprovar() {
 
-        if (status == Status.ABERTO) {
-            status = Status.APROVADO;
+        if (status.equals("ABERTO")) {
+            status = "APROVADO";
         }
     }
 
     public void reprovar() {
 
-        if (status == Status.ABERTO) {
-            status = Status.REPROVADO;
+        if (status.equals("ABERTO")) {
+            status = "REPROVADO";
         }
     }
 
     public void concluir(LocalDate data) {
 
-        if (status == Status.APROVADO) {
-            status = Status.CONCLUIDO;
+        if (status.equals("APROVADO")) {
+
+            status = "CONCLUIDO";
             dataConclusao = data;
         }
     }
 
     public boolean podeExcluir(Usuario usuario) {
 
-        return status == Status.ABERTO
+        if (usuario == null) {
+            return false;
+        }
+
+        return status.equals("ABERTO")
                 && usuario instanceof Funcionario
-                && ((Funcionario) usuario).getId() == funcionarioSolicitante.getId();
+                && ((Funcionario) usuario).getId()
+                == funcionarioSolicitante.getId();
     }
 
     public int getId() {
@@ -100,7 +113,7 @@ public class Pedido {
         return dataConclusao;
     }
 
-    public Status getStatus() {
+    public String getStatus() {
         return status;
     }
 

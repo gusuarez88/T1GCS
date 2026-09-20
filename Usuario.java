@@ -18,10 +18,12 @@ public abstract class Usuario {
     }
 
     public String getIniciais() {
+
         String[] partes = nome.trim().split("\\s+");
         String iniciais = "";
 
         for (String parte : partes) {
+
             if (!parte.isEmpty()) {
                 iniciais += Character.toUpperCase(parte.charAt(0));
             }

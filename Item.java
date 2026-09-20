@@ -7,6 +7,7 @@ public class Item {
     private double total;
 
     public Item(String descricao, double valorUnitario, int quantidade) {
+
         this.descricao = descricao;
         this.valorUnitario = valorUnitario;
         this.quantidade = quantidade;
@@ -14,6 +15,7 @@ public class Item {
     }
 
     public double calcularTotal() {
+
         return valorUnitario * quantidade;
     }
 

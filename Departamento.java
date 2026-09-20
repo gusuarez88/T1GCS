@@ -5,6 +5,7 @@ public class Departamento {
     private double limitePorPedido;
 
     public Departamento(String nome, double limitePorPedido) {
+
         this.nome = nome;
         this.limitePorPedido = limitePorPedido;
     }
