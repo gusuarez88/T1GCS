@@ -9,38 +9,29 @@ public class Pedido {
     private Departamento departamentoSolicitante;
     private LocalDate dataPedido;
     private LocalDate dataConclusao;
-    private String status;
+    private Status status;
     private ArrayList<Item> itens;
     private double valorTotal;
 
-    public Pedido(
-            int id,
-            Funcionario funcionarioSolicitante,
-            Departamento departamentoSolicitante,
-            LocalDate dataPedido) {
+    public enum Status {
+        ABERTO, APROVADO, REPROVADO, CONCLUIDO
+    }
+
+    public Pedido(int id, Funcionario funcionario,
+            Departamento departamento, LocalDate dataPedido) {
 
         this.id = id;
-        this.funcionarioSolicitante = funcionarioSolicitante;
-        this.departamentoSolicitante = departamentoSolicitante;
+        this.funcionarioSolicitante = funcionario;
+        this.departamentoSolicitante = departamento;
         this.dataPedido = dataPedido;
-        this.dataConclusao = null;
-
-        // O pedido sempre começa aberto
-        this.status = "ABERTO";
-
+        this.status = Status.ABERTO;
         this.itens = new ArrayList<>();
         this.valorTotal = 0;
     }
 
     public void adicionarItem(Item item) {
-
-        if (!status.equals("ABERTO")) {
-
-            System.out.println(
-                    "Não é possível adicionar itens a um pedido que não está aberto."
-            );
-
-            return;
+        if (item == null) {
+            throw new IllegalArgumentException("Item inválido.");
         }
 
         itens.add(item);
@@ -48,49 +39,57 @@ public class Pedido {
     }
 
     public double calcularTotal() {
-
         valorTotal = 0;
 
         for (Item item : itens) {
-            valorTotal += item.getTotal();
+            valorTotal += item.calcularTotal();
         }
 
         return valorTotal;
     }
 
     public void aprovar() {
-
-        if (status.equals("ABERTO")) {
-            status = "APROVADO";
+        if (status != Status.ABERTO) {
+            throw new IllegalStateException(
+                    "O pedido não está aberto."
+            );
         }
+
+        status = Status.APROVADO;
     }
 
     public void reprovar() {
-
-        if (status.equals("ABERTO")) {
-            status = "REPROVADO";
+        if (status != Status.ABERTO) {
+            throw new IllegalStateException(
+                    "O pedido não está aberto."
+            );
         }
+
+        status = Status.REPROVADO;
     }
 
     public void concluir(LocalDate data) {
-
-        if (status.equals("APROVADO")) {
-
-            status = "CONCLUIDO";
-            dataConclusao = data;
+        if (status != Status.APROVADO) {
+            throw new IllegalStateException(
+                    "Somente pedidos aprovados podem ser concluídos."
+            );
         }
+
+        if (data.isBefore(dataPedido)) {
+            throw new IllegalArgumentException(
+                    "A conclusão não pode anteceder o pedido."
+            );
+        }
+
+        dataConclusao = data;
+        status = Status.CONCLUIDO;
     }
 
     public boolean podeExcluir(Usuario usuario) {
-
-        if (usuario == null) {
-            return false;
-        }
-
-        return status.equals("ABERTO")
+        return status == Status.ABERTO
+                && usuario != null
                 && usuario instanceof Funcionario
-                && ((Funcionario) usuario).getId()
-                == funcionarioSolicitante.getId();
+                && usuario.getId() == funcionarioSolicitante.getId();
     }
 
     public int getId() {
@@ -113,12 +112,12 @@ public class Pedido {
         return dataConclusao;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
     public ArrayList<Item> getItens() {
-        return itens;
+        return new ArrayList<>(itens);
     }
 
     public double getValorTotal() {

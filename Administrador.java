@@ -1,8 +1,27 @@
 
 public class Administrador extends Usuario {
 
-    public Administrador(int id, String nome) {
+    private String cargo;
 
+    public Administrador(int id, String nome) {
         super(id, nome);
+        this.cargo = "Administrador";
+    }
+
+    public String getCargo() {
+        return cargo;
+    }
+
+    public void setCargo(String cargo) {
+        this.cargo = cargo;
+    }
+
+    public void gerenciarSistema() {
+        System.out.println("Administrador gerenciando o sistema.");
+    }
+
+    @Override
+    public String getTipo() {
+        return "Administrador";
     }
 }

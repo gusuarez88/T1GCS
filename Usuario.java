@@ -18,17 +18,18 @@ public abstract class Usuario {
     }
 
     public String getIniciais() {
+        StringBuilder iniciais = new StringBuilder();
 
-        String[] partes = nome.trim().split("\\s+");
-        String iniciais = "";
-
-        for (String parte : partes) {
-
+        for (String parte : nome.trim().split("\\s+")) {
             if (!parte.isEmpty()) {
-                iniciais += Character.toUpperCase(parte.charAt(0));
+                iniciais.append(
+                        Character.toUpperCase(parte.charAt(0))
+                );
             }
         }
 
-        return iniciais;
+        return iniciais.toString();
     }
+
+    public abstract String getTipo();
 }

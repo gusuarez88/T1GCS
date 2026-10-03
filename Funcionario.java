@@ -4,9 +4,7 @@ public class Funcionario extends Usuario {
     private Departamento departamento;
 
     public Funcionario(int id, String nome, Departamento departamento) {
-
         super(id, nome);
-
         this.departamento = departamento;
     }
 
@@ -16,5 +14,10 @@ public class Funcionario extends Usuario {
 
     public void setDepartamento(Departamento departamento) {
         this.departamento = departamento;
+    }
+
+    @Override
+    public String getTipo() {
+        return "Funcionário";
     }
 }

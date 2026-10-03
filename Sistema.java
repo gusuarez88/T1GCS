@@ -237,12 +237,13 @@ public class Sistema {
                     > departamento.getLimitePorPedido()) {
 
                 System.out.println(
-                        "O limite do departamento foi ultrapassado."
+                        "O limite do departamento foi ultrapassado. Este item não foi adicionado ao pedido."
                 );
-                return;
-            }
 
-            pedido.adicionarItem(item);
+            } else {
+                pedido.adicionarItem(item);
+                System.out.println("Item adicionado com sucesso.");
+            }
 
             System.out.print(
                     "Adicionar outro item? (1-Sim / 0-Não): "
@@ -776,6 +777,36 @@ public class Sistema {
         adicionarUsuario(
                 new Funcionario(115, "Camila Barbosa", compras)
         );
+
+        Funcionario funcFinanceiro = (Funcionario) usuarios.get(2);
+        Funcionario funcRh = (Funcionario) usuarios.get(5);
+        Funcionario funcEngenharia = (Funcionario) usuarios.get(8);
+        Funcionario funcManutencao = (Funcionario) usuarios.get(11);
+
+        Pedido pedido1 = new Pedido(1, funcFinanceiro, funcFinanceiro.getDepartamento(), LocalDate.now().minusDays(5));
+        pedido1.adicionarItem(new Item("Computador Portátil", 1500.0, 2));
+        pedido1.adicionarItem(new Item("Rato sem fios", 50.0, 2));
+        adicionarPedido(pedido1);
+
+        Pedido pedido2 = new Pedido(2, funcRh, funcRh.getDepartamento(), LocalDate.now().minusDays(15));
+        pedido2.adicionarItem(new Item("Cadeiras de Escritório Ergonómicas", 350.0, 4));
+        pedido2.aprovar();
+        adicionarPedido(pedido2);
+
+        Pedido pedido3 = new Pedido(3, funcEngenharia, funcEngenharia.getDepartamento(), LocalDate.now().minusDays(20));
+        pedido3.adicionarItem(new Item("Licença de Software CAD", 4500.0, 1));
+        pedido3.reprovar();
+        adicionarPedido(pedido3);
+
+        Pedido pedido4 = new Pedido(4, funcManutencao, funcManutencao.getDepartamento(), LocalDate.now().minusDays(40));
+        pedido4.adicionarItem(new Item("Kit de Ferramentas Industriais", 1200.0, 2));
+        pedido4.aprovar();
+        pedido4.concluir(LocalDate.now().minusDays(35));
+        adicionarPedido(pedido4);
+
+        Pedido pedido5 = new Pedido(5, funcEngenharia, funcEngenharia.getDepartamento(), LocalDate.now().minusDays(2));
+        pedido5.adicionarItem(new Item("Monitor 27 polegadas", 300.0, 3));
+        adicionarPedido(pedido5);
 
         usuarioAtual = usuarios.get(0);
     }
