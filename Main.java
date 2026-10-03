@@ -2,8 +2,9 @@
 public class Main {
 
     public static void main(String[] args) {
-    }
 
-    public void exibirMenu(...) {
+        Sistema sistema = new Sistema();
+
+        sistema.exibirMenu();
     }
 }
