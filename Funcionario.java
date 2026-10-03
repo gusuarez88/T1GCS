@@ -16,7 +16,7 @@ public class Funcionario extends Usuario {
         this.departamento = departamento;
     }
 
-    @Override
+    @Override // Sobrescreve o método getTipo() da classe Usuario
     public String getTipo() {
         return "Funcionário";
     }
